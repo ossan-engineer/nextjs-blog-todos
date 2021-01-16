@@ -17,3 +17,28 @@ export const getAllPostsData = async () => {
 
   return filteredPosts;
 };
+
+export const getAllIds = async () => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/list-post`
+  );
+  const posts: Post[] = await res.json();
+  const ids = posts.map(({ id }) => ({
+    params: {
+      id: String(id),
+    },
+  }));
+
+  return ids;
+};
+
+export const getPostData = async (id: string) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/detail-post/${id}`
+  );
+  const post: Post = await res.json();
+
+  return {
+    post,
+  };
+};
