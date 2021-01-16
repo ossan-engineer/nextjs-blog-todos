@@ -47,6 +47,7 @@ export const getStaticProps = async () => {
     props: {
       filteredPosts,
     },
+    revalidate: 3,
   };
 };
 
