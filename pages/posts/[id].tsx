@@ -9,14 +9,15 @@ type Props = {
   post: Post;
 };
 
-const PostDetail: React.FC<Props> = ({
-  post: { id, created_at, title, content },
-}) => {
+const PostDetail: React.FC<Props> = ({ post }) => {
   const router = useRouter();
 
-  if (!id) {
+  if (router.isFallback || !post) {
     return <div>Loading...</div>;
   }
+
+  const { id, created_at, title, content } = post;
+
   return (
     <Layout title={title}>
       <p className='m-4'>ID: {id}</p>
@@ -51,7 +52,7 @@ export const getStaticPaths = async () => {
 
   return {
     paths,
-    fallback: false,
+    fallback: true,
   };
 };
 
