@@ -1,10 +1,22 @@
 import Link from 'next/link';
 
 import Layout from 'components/Layout';
+import PostItem from 'components/PostItem';
+import { getAllPostsData, Post } from 'lib/posts';
 
-const BlogPage: React.FC = () => {
+type Props = {
+  filteredPosts: Post[];
+};
+
+const BlogPage: React.FC<Props> = ({ filteredPosts }) => {
   return (
     <Layout title='Blog page'>
+      <ul>
+        {filteredPosts &&
+          filteredPosts.map((filteredPost) => (
+            <PostItem key={filteredPost.id} post={filteredPost} />
+          ))}
+      </ul>
       <Link href='/main-page'>
         <div className='flex cursor-pointer mt-12'>
           <svg
@@ -26,6 +38,16 @@ const BlogPage: React.FC = () => {
       </Link>
     </Layout>
   );
+};
+
+export const getStaticProps = async () => {
+  const filteredPosts = await getAllPostsData();
+
+  return {
+    props: {
+      filteredPosts,
+    },
+  };
 };
 
 export default BlogPage;
