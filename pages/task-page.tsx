@@ -34,7 +34,9 @@ const TaskPage: React.FC<Props> = ({ staticFilteredTasks }) => {
     <Layout title='Task page'>
       <ul>
         {filteredTasks &&
-          filteredTasks.map((task) => <TaskItem key={task.id} task={task} />)}
+          filteredTasks.map((task) => (
+            <TaskItem key={task.id} task={task} onDelete={mutate} />
+          ))}
       </ul>
       <Link href='/main-page'>
         <div className='flex cursor-pointer mt-12'>
