@@ -8,7 +8,7 @@ import TaskItem from 'components/TaskItem';
 import { getAllTasksData, Task } from 'lib/tasks';
 
 type Props = {
-  staticFlteredTasks: Task[];
+  staticFilteredTasks: Task[];
 };
 
 const fetcher = async (url) => {
@@ -20,9 +20,9 @@ const fetcher = async (url) => {
 
 const API_URL = `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/list-task/`;
 
-const TaskPage: React.FC<Props> = ({ staticFlteredTasks }) => {
+const TaskPage: React.FC<Props> = ({ staticFilteredTasks }) => {
   const { data: tasks, mutate } = useSWR(API_URL, fetcher, {
-    initialData: staticFlteredTasks,
+    initialData: staticFilteredTasks,
   });
   const filteredTasks = sortby(tasks, [(o) => o.created_at]).reverse();
 
@@ -60,11 +60,11 @@ const TaskPage: React.FC<Props> = ({ staticFlteredTasks }) => {
 };
 
 export const getStaticProps = async () => {
-  const staticFlteredTasks = await getAllTasksData();
+  const staticFilteredTasks = await getAllTasksData();
 
   return {
     props: {
-      staticFlteredTasks,
+      staticFilteredTasks,
     },
     revalidate: 3,
   };

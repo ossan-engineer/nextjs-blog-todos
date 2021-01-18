@@ -18,12 +18,12 @@ export const getAllTasksData = async () => {
   return filteredTasks;
 };
 
-export const getAllIds = async () => {
+export const getAllTaskIds = async () => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/task-post`
+    `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/list-task`
   );
-  const posts: Task[] = await res.json();
-  const ids = posts.map(({ id }) => ({
+  const tasks: Task[] = await res.json();
+  const ids = tasks.map(({ id }) => ({
     params: {
       id: String(id),
     },
