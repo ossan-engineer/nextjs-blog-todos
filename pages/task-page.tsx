@@ -1,4 +1,7 @@
+import { useEffect } from 'react';
 import Link from 'next/link';
+import useSWR from 'swr';
+import sortby from 'lodash.sortby';
 
 import Layout from 'components/Layout';
 import TaskItem from 'components/TaskItem';
@@ -8,14 +11,30 @@ type Props = {
   staticFlteredTasks: Task[];
 };
 
+const fetcher = async (url) => {
+  const res = await fetch(url);
+  const data = await res.json();
+
+  return data;
+};
+
+const API_URL = `${process.env.NEXT_PUBLIC_RESTAPI_URL}api/list-task/`;
+
 const TaskPage: React.FC<Props> = ({ staticFlteredTasks }) => {
+  const { data: tasks, mutate } = useSWR(API_URL, fetcher, {
+    initialData: staticFlteredTasks,
+  });
+  const filteredTasks = sortby(tasks, [(o) => o.created_at]).reverse();
+
+  useEffect(() => {
+    mutate();
+  }, []);
+
   return (
     <Layout title='Task page'>
       <ul>
-        {staticFlteredTasks &&
-          staticFlteredTasks.map((task) => (
-            <TaskItem key={task.id} task={task} />
-          ))}
+        {filteredTasks &&
+          filteredTasks.map((task) => <TaskItem key={task.id} task={task} />)}
       </ul>
       <Link href='/main-page'>
         <div className='flex cursor-pointer mt-12'>
@@ -47,7 +66,7 @@ export const getStaticProps = async () => {
     props: {
       staticFlteredTasks,
     },
-    revalidate: 3,
+    // revalidate: 3,
   };
 };
 
