@@ -66,7 +66,7 @@ export const getStaticProps = async () => {
     props: {
       staticFlteredTasks,
     },
-    // revalidate: 3,
+    revalidate: 3,
   };
 };
 
