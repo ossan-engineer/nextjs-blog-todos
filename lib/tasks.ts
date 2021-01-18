@@ -4,7 +4,6 @@ import sortby from 'lodash.sortby';
 export type Task = {
   id: string;
   title: string;
-  content: string;
   created_at: number;
 };
 
