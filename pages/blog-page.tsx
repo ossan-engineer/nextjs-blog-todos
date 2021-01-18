@@ -5,16 +5,16 @@ import PostItem from 'components/PostItem';
 import { getAllPostsData, Post } from 'lib/posts';
 
 type Props = {
-  filteredPosts: Post[];
+  staticFilteredPosts: Post[];
 };
 
-const BlogPage: React.FC<Props> = ({ filteredPosts }) => {
+const BlogPage: React.FC<Props> = ({ staticFilteredPosts }) => {
   return (
     <Layout title='Blog page'>
       <ul>
-        {filteredPosts &&
-          filteredPosts.map((filteredPost) => (
-            <PostItem key={filteredPost.id} post={filteredPost} />
+        {staticFilteredPosts &&
+          staticFilteredPosts.map((post) => (
+            <PostItem key={post.id} post={post} />
           ))}
       </ul>
       <Link href='/main-page'>
@@ -41,11 +41,11 @@ const BlogPage: React.FC<Props> = ({ filteredPosts }) => {
 };
 
 export const getStaticProps = async () => {
-  const filteredPosts = await getAllPostsData();
+  const staticFilteredPosts = await getAllPostsData();
 
   return {
     props: {
-      filteredPosts,
+      staticFilteredPosts,
     },
     revalidate: 3,
   };

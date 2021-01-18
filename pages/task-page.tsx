@@ -1,10 +1,22 @@
 import Link from 'next/link';
 
 import Layout from 'components/Layout';
+import TaskItem from 'components/TaskItem';
+import { getAllTasksData, Task } from 'lib/tasks';
 
-const TaskPage: React.FC = () => {
+type Props = {
+  staticFlteredTasks: Task[];
+};
+
+const TaskPage: React.FC<Props> = ({ staticFlteredTasks }) => {
   return (
     <Layout title='Task page'>
+      <ul>
+        {staticFlteredTasks &&
+          staticFlteredTasks.map((task) => (
+            <TaskItem key={task.id} task={task} />
+          ))}
+      </ul>
       <Link href='/main-page'>
         <div className='flex cursor-pointer mt-12'>
           <svg
@@ -26,6 +38,17 @@ const TaskPage: React.FC = () => {
       </Link>
     </Layout>
   );
+};
+
+export const getStaticProps = async () => {
+  const staticFlteredTasks = await getAllTasksData();
+
+  return {
+    props: {
+      staticFlteredTasks,
+    },
+    revalidate: 3,
+  };
 };
 
 export default TaskPage;
